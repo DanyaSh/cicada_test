@@ -21,3 +21,10 @@
       async: 600
       poll: 0
       become_user: ans_web
+
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

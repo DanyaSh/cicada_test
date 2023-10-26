@@ -5,18 +5,23 @@
     state: present
   become: yes
 
-- name: Open SSL
+- name: Generate SSL private key
+  openssl_privatekey:
+    path: "/etc/nginx/ssl_cert_key.pem"
+    type: RSA 
+    size: 2048
+    state: present
+  become: yes
+
+- name: Generate self-signed SSL certificate
   openssl_certificate:
-    path: "/etc/nginx/{{ item.name }}"
-    privatekey_path: "/etc/nginx/{{ item.name }}_key.pem"
-    privatekey_type: rsa
-    bits: 2048
-    owner: root
-    group: root
-    mode: "0600"
-  loop:
-    - { name: "ssl_cert.crt" }
-    - { name: "ssl_cert_key" }
+    path: "/etc/nginx/ssl_cert.crt"
+    privatekey_path: "/etc/nginx/ssl_cert_key.pem"
+    # privatekey_type: RSA 
+    # bits: 2048
+    provider: selfsigned
+    state: present
+  become: yes
 
 - name: Copy config Nginx
   template:
