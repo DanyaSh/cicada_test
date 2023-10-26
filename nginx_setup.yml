@@ -1,0 +1,23 @@
+---
+- name: Nginx deploy
+  hosts: all
+  become: yes
+
+  roles:
+    - nginx
+
+  tasks:
+    - name: Check ports 80, 443
+      wait_for:
+        host: "localhost"
+        port: "{{ item }}"
+        state: started
+      loop:
+        - 80
+        - 443
+
+    - name: Run App.py
+      command: "python /home/ans_web/test/app.py --port 8021"
+      async: 600
+      poll: 0
+      become_user: ans_web

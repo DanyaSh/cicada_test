@@ -1,0 +1,2 @@
+[staging_servers]
+01_ans ansible_host=81.200.150.68 ansible_user=ans_web ansible_ssh_private_key_file=/home/alice/.ssh/adv_ans/01_ans
